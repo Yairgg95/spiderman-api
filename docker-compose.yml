@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: spiderverse_db
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
+
+  backend:
+    build: .
+    container_name: spiderverse_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/spiderverse_db
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
+
+volumes:
+  mysql_data:
