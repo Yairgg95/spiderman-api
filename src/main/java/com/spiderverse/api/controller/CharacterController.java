@@ -25,9 +25,7 @@ public class CharacterController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Character> getById(@PathVariable Long id){
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.getById(id));
     }
 
     @PostMapping
@@ -35,9 +33,9 @@ public class CharacterController {
         return ResponseEntity.ok(service.create(character));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Character> update(@PathVariable Long id, @RequestBody Character character) {
-        return ResponseEntity.ok(service.update(id,character));
+    @PatchMapping("/{id}")
+    public ResponseEntity<Character> patch(@PathVariable Long id, @RequestBody Character character) {
+        return ResponseEntity.ok(service.patch(id,character));
     }
 
     @DeleteMapping("/{id}")
