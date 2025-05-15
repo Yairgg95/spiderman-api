@@ -38,7 +38,7 @@ public class CharacterService {
                     c.setName(updatedCharacter.getName());
                     c.setIdentifier(updatedCharacter.getIdentifier());
                     c.setImageURL(updatedCharacter.getImageURL());
-                    c.setRole(updatedCharacter.getDescription());
+                    c.setRole(updatedCharacter.getRole());
                     c.setDescription(updatedCharacter.getDescription());
                     return repository.save(c);
                 })
