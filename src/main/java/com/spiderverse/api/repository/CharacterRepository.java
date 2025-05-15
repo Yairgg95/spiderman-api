@@ -1,5 +1,6 @@
 package com.spiderverse.api.repository;
 
+import com.spiderverse.api.model.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
