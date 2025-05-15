@@ -44,7 +44,7 @@ public class Character {
     }
 
     @PreUpdate
-    public void preUpdat(){
+    public void preUpdate(){
         this.updatedAt = LocalDateTime.now();
     }
 }
