@@ -1,0 +1,49 @@
+package com.spiderverse.api.controller;
+
+
+import com.spiderverse.api.model.Character;
+import com.spiderverse.api.service.CharacterService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/characters")
+@CrossOrigin(origins = "*")
+public class CharacterController {
+    private final CharacterService service;
+
+    public CharacterController(CharacterService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Character>> getAll(@RequestParam(defaultValue = "createdAt") String orderBy){
+        return ResponseEntity.ok(service.getAll(orderBy));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Character> getById(@PathVariable Long id){
+        return service.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Character> create(@RequestBody Character character) {
+        return ResponseEntity.ok(service.create(character));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Character> update(@PathVariable Long id, @RequestBody Character character) {
+        return ResponseEntity.ok(service.update(id,character));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+}
