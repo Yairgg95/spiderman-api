@@ -64,6 +64,7 @@ to AWS S3, MySQL persistence, caching, and error handling.
 ### Run Locally Without Docker
 
 If you prefer to run the backend locally without Docker, follow these steps:
+#### For Unix-based systems (Linux/macOS)
 
 1. Clone the repository:
    ```bash
@@ -92,6 +93,42 @@ If you prefer to run the backend locally without Docker, follow these steps:
 6. Access the API:
    Once the containers are running, the API will be available at:
    http://localhost:8080
+
+#### Setup Instructions for Windows
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Yairgg95/spiderman-api.git
+   ```
+
+2. Copy the example environment file and configure your environment variables:
+    * Manually rename `.env.example` to `.env`
+    * Open `.env` and update it with your credentials.
+
+3. Export environment variables:
+    * **Using Command Prompt (CMD)**:
+      ```cmd
+      for /f "usebackq tokens=1,2 delims==" %i in (.env) do @set %i=%j
+      ```
+    * **Using PowerShell**:
+      ```powershell
+      Get-Content .env | ForEach-Object { if ($_ -match '^\s*([^#][^=]+)=(.*)$') { $name = $matches[1]; $value = $matches[2]; [System.Environment]::SetEnvironmentVariable($name, $value, "Process") } }
+      ```
+
+4. Build the project (skip tests):
+   ```bash
+   mvn clean package -DskipTests
+   ```
+
+5. Run the application:
+   ```bash
+   java -jar target/api-0.0.1-SNAPSHOT.jar
+   ```
+
+6. Access the API:
+   Once the containers are running, the API will be available at:
+   http://localhost:8080
+
 
 ## Authentication Endpoints
 
