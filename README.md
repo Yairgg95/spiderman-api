@@ -1,6 +1,7 @@
 # Spiderman API
 
-A Java Spring Boot backend providing a RESTful API for managing characters, featuring JWT authentication, image upload to AWS S3, MySQL persistence, caching, and error handling.
+A Java Spring Boot backend providing a RESTful API for managing characters, featuring JWT authentication, image upload
+to AWS S3, MySQL persistence, caching, and error handling.
 
 ## 🚀 Features
 
@@ -33,6 +34,8 @@ A Java Spring Boot backend providing a RESTful API for managing characters, feat
 
 ## ⚙️ Setup
 
+### Run with Docker
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/Yairgg95/spiderman-api.git
@@ -56,98 +59,224 @@ A Java Spring Boot backend providing a RESTful API for managing characters, feat
 
 5. Access the API:
    Once the containers are running, the API will be available at:
-   http://localhost:8080 (or the configured port in your .env).
+   http://localhost:8080
+
+### Run Locally Without Docker
+
+If you prefer to run the backend locally without Docker, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Yairgg95/spiderman-api.git
+   ```
+2. Copy the example environment file and configure your environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   Then, open the .env file and update it with your credentials.
+
+3. Export enviroment variables:
+   ```bash
+   export $(grep -v '^#' .env | xargs)
+   ```
+
+4. Build the project (skip tests):
+   ```bash
+   mvn clean package -DskipTests
+   ```
+
+5. Run the application:
+   ```bash
+   java -jar target/api-0.0.1-SNAPSHOT.jar
+   ```
+6. Access the API:
+   Once the containers are running, the API will be available at:
+   http://localhost:8080
 
 ## Authentication Endpoints
 
 ### Register User
+
 * **URL**: `/api/auth/register`
 * **Method**: `POST`
 * **Authentication**: None (Public)
 * **Request Body**:
+
 ```json
-{  
-  "username": "string",  
-  "password": "string"  
+{
+  "username": "peter_parker",
+  "password": "spider123"
 }
 ```
+
 * **Response**: User information without password
+
 ```json
-{  
-  "username": "string"  
+{
+  "username": "peter_parker"
 }
 ```
 
 ### Login
+
 * **URL**: `/api/auth/login`
 * **Method**: `POST`
 * **Authentication**: None (Public)
 * **Request Body**:
+
 ```json
-{  
-  "username": "string",  
-  "password": "string"  
+{
+  "username": "peter_parker",
+  "password": "spider123"
 }
 ```
+
 * **Response**: JWT token
+
 ```json
-{  
-  "token": "string"  
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZXRlcl9wYXJrZXIiLCJpYXQiOjE2MjE1MjM2OTAsImV4cCI6MTYyMTYxMDA5MH0.example_token_signature"
 }
 ```
 
 ## Character Endpoints
 
 ### Get All Characters
+
 * **URL**: `/api/characters`
 * **Method**: `GET`
 * **Authentication**: None (Public)
 * **Query Parameters**:
-   * `orderBy` (optional): Sort order for characters (default: "createdAt", alternative: "name")
-* **Response**: List of characters
+    * `orderBy` (optional): Sort order for characters (default: "createdAt", alternative: "name")
+* **Response**:
+
+```JSON
+
+[
+  {
+    "id": 1,
+    "name": "Peter Parker",
+    "identifier": "spider-man-616",
+    "imageURL": "https://spiderverse-images.s3.amazonaws.com/spider-man-616_profile.jpg",
+    "role": "Main Hero",
+    "description": "The original Spider-Man from universe 616",
+    "createdAt": "2025-05-15T10:30:00",
+    "updatedAt": "2025-05-15T10:30:00"
+  },
+  {
+    "id": 2,
+    "name": "Miles Morales",
+    "identifier": "spider-man-1610",
+    "imageURL": "https://spiderverse-images.s3.amazonaws.com/spider-man-1610_profile.jpg",
+    "role": "Alternative Hero",
+    "description": "Spider-Man from the Ultimate universe",
+    "createdAt": "2025-05-15T11:15:00",
+    "updatedAt": "2025-05-15T11:15:00"
+  }
+]
+
+
+```
 
 ### Get Character by ID
+
 * **URL**: `/api/characters/{id}`
 * **Method**: `GET`
 * **Authentication**: None (Public)
 * **Path Parameters**:
-   * `id`: Character ID
-* **Response**: Character details
+    * `id`: Character ID
+* **Response**:
+
+```JSON
+  {
+  "id": 1,
+  "name": "Peter Parker",
+  "identifier": "spider-man-616",
+  "imageURL": "https://spiderverse-images.s3.amazonaws.com/spider-man-616_profile.jpg",
+  "role": "Main Hero",
+  "description": "The original Spider-Man from universe 616",
+  "createdAt": "2025-05-15T10:30:00",
+  "updatedAt": "2025-05-15T10:30:00"
+  }
+```
+
 * **Error Responses**:
-   * `404`: Character not found
+    * `404`: Character not found
 
 ### Create Character
+
 * **URL**: `/api/characters`
 * **Method**: `POST`
 * **Authentication**: Required (JWT Token)
 * **Content Type**: `multipart/form-data`
 * **Request Parts**:
-   * `character`: JSON string with character data
-   * `image` (optional): Character image file
-* **Response**: Created character with ID and image URL
+    * `character`:
+   ```JSON
+   {  
+  "name": "Gwen Stacy",  
+  "identifier": "spider-gwen-65",  
+  "role": "Alternative Hero",  
+  "description": "Spider-Woman from universe 65"  
+  }
+  ```
+    * `image` (optional): Character image file
+* **Response**:
+  ```JSON
+  {  
+  "id": 3,  
+  "name": "Gwen Stacy",  
+  "identifier": "spider-gwen-65",  
+  "imageURL": "https://spiderverse-images.s3.amazonaws.com/spider-gwen-65_profile.jpg",  
+  "role": "Alternative Hero",  
+  "description": "Spider-Woman from universe 65",  
+  "createdAt": "2025-05-16T09:45:00",  
+  "updatedAt": null  
+  }
+   ```
 * **Notes**: If no image is provided, a default Spider-Man image will be used
 
 ### Update Character
+
 * **URL**: `/api/characters/{id}`
 * **Method**: `PATCH`
 * **Authentication**: Required (JWT Token)
 * **Content Type**: `multipart/form-data`
 * **Path Parameters**:
-   * `id`: Character ID
+    * `id`: Character ID
 * **Request Parts**:
-   * `character`: JSON string with character data to update
-   * `image` (optional): New character image file
-* **Response**: Updated character
+    * `character`:
+   ```JSON
+  {  
+  "name": "Gwen Stacy",  
+  "role": "Ghost-Spider",  
+  "description": "Also known as Ghost-Spider in universe 65."  
+  } 
+  ```
+    * `image` (optional): New character image file
+* **Response**:
+  ```JSON
+  {  
+  "id": 3,  
+  "name": "Gwen Stacy",  
+  "identifier": "spider-gwen-65",  
+  "imageURL": "https://spiderverse-images.s3.amazonaws.com/spider-gwen-65_updated.jpg",  
+  "role": "Ghost-Spider",  
+  "description": "Also known as Ghost-Spider in universe 65.",  
+  "createdAt": "2025-05-16T09:45:00",  
+  "updatedAt": "2025-05-16T10:20:00"  
+  } 
+  ```
 * **Error Responses**:
-   * `404`: Character not found
+    * `404`: Character not found
 
 ### Delete Character
+
 * **URL**: `/api/characters/{id}`
 * **Method**: `DELETE`
 * **Authentication**: Required (JWT Token)
 * **Path Parameters**:
-   * `id`: Character ID
+    * `id`: Character ID
 * **Response**: `204 No Content`
 * **Error Responses**:
-   * `404`: Character not found
+    * `404`: Character not found
    
