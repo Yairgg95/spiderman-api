@@ -45,6 +45,11 @@ to AWS S3, MySQL persistence, caching, and error handling.
    cp .env.example .env
    ```
    Then, open the .env file and update it with your credentials.
+*  **Notes**: Use the following values in your .env file, as they are required by the Docker Compose configuration:
+   ```env
+   DB_HOST=mysql
+   DB_PORT=3306
+   ```
 
 3. Build the project (skip tests):
    ```bash
