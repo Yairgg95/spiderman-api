@@ -1,0 +1,265 @@
+{
+  "info": {
+    "_postman_id": "d2916c42-ad01-4dd5-b266-b2a1bebc9260",
+    "name": "spiderverse-API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44587765",
+    "_collection_link": "https://yairguadarrama.postman.co/workspace/Yair-Guadarrama's-Workspace~7ad98b28-b6c0-4004-8a52-2f4db009d5cc/collection/44587765-d2916c42-ad01-4dd5-b266-b2a1bebc9260?action=share&source=collection_link&creator=44587765"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"peterparker23\",\n  \"password\": \"spiderman123\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"peterparker23\",\n  \"password\": \"spiderman123\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "characters",
+      "item": [
+        {
+          "name": "getCharacters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/characters",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "characters"
+              ],
+              "query": [
+                {
+                  "key": "orderBy",
+                  "value": "name",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCharactersOrderByName",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/characters?orderBy=name",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "characters"
+              ],
+              "query": [
+                {
+                  "key": "orderBy",
+                  "value": "name"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createCharacters",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZXRlcnBhcmtlcjIzIiwiaWF0IjoxNzQ3MzcxMDkwLCJleHAiOjE3NDczNzQ2OTB9.EgCrL5iKKGjSBXibML-vS8ZmJlNNJEEhLozjKkZQMq8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/Users/yair/Downloads/53da23176332383.Y3JvcCwxNjE2LDEyNjQsMCww.jpg"
+                },
+                {
+                  "key": "character",
+                  "value": "{\"name\": \"Spider-Gwen\", \"identifier\": \"spider-gwen-71\", \"description\": \"From Earth-65\", \"role\": \"hero\"}\n",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/characters",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "characters"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCharactersById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/characters/10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "characters",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updatedCharactersById",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZXRlcnBhcmtlciIsImlhdCI6MTc0NzM1NjU5MywiZXhwIjoxNzQ3MzkyNTkzfQ.2_tfCb4-MIO-IbYoqvfKMlAflknCpH_6V060wQpKl1s",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/Users/yair/Downloads/WhatsApp Image 2025-04-10 at 11.14.38.jpeg"
+                },
+                {
+                  "key": "character",
+                  "value": "{\"name\": \"spiderman\", \"identifier\":\"spidey-35\"}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/characters/10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "characters",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteCharactersById",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZXRlcnBhcmtlciIsImlhdCI6MTc0NzMzNjk0MCwiZXhwIjoxNzQ3MzcyOTQwfQ._jnwlYsIPnOZKRalUQxpOg6_2vSehPibsUCdvqyAyu4",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/characters/12",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "characters",
+                "12"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
