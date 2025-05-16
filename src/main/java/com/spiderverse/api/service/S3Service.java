@@ -1,5 +1,6 @@
 package com.spiderverse.api.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -11,7 +12,9 @@ import java.io.IOException;
 @Service
 public class S3Service {
     private final S3Client s3Client;
-    private final String bucketName = System.getenv("AWS_BUCKET_NAME");
+
+    @Value("${aws.bucket.name}")
+    private String bucketName;
 
     public S3Service(S3Client s3Client) {
         this.s3Client = s3Client;
