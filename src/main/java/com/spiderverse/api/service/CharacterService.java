@@ -4,6 +4,8 @@ package com.spiderverse.api.service;
 import com.spiderverse.api.exception.NotFoundException;
 import com.spiderverse.api.model.Character;
 import com.spiderverse.api.repository.CharacterRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +15,6 @@ import java.util.List;
 @Service
 public class CharacterService {
 
-
     private final CharacterRepository repository;
     private final S3Service s3Service;
 
@@ -22,16 +23,19 @@ public class CharacterService {
         this.s3Service = s3Service;
     }
 
+    @Cacheable(value = "characters", key = "#orderBy")
     public List<Character> getAll(String orderBy) {
         return "name".equals(orderBy)
                 ? repository.findAllByOrderByNameAsc()
                 : repository.findAllByOrderByCreatedAtAsc();
     }
 
+    @Cacheable(value = "characterById", key = "#id")
     public Character getById(Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Character with id " + id + " not found"));
     }
 
+    @CacheEvict(value =  {"characters", "characterById"}, allEntries = true)
     public Character create(Character character, MultipartFile image) throws IOException {
         String imageUrl = (image != null && !image.isEmpty())
                 ? s3Service.uploadFile(image, character.getIdentifier())
@@ -40,6 +44,7 @@ public class CharacterService {
         return repository.save(character);
     }
 
+    @CacheEvict(value =  {"characters", "characterById"}, allEntries = true)
     public Character patch(Long id, Character updatedCharacter, MultipartFile image) throws IOException {
         Character character = getById(id);
 
@@ -58,6 +63,7 @@ public class CharacterService {
         return repository.save(character);
     }
 
+    @CacheEvict(value =  {"characters", "characterById"}, allEntries = true)
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new NotFoundException("Character with id " + id + " not found");
