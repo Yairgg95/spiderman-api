@@ -15,14 +15,16 @@ public class JwtUtil {
 
     private Key key;
 
+    @Value("${jwt.secret}")
+    private String secret;
+
     @Value("${jwt.expiration.ms}")
     private long expiration;
 
     @PostConstruct
     public void init() {
-        String secret = System.getenv("JWT_SECRET");
         if (secret == null || secret.isEmpty()) {
-            throw new IllegalStateException("JWT_SECRET enviroment variable not set.");
+            throw new IllegalStateException("JWT secret not set.");
         }
 
         byte[] decodedKey = Base64.getDecoder().decode(secret);
